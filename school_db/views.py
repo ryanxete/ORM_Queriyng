@@ -145,8 +145,8 @@ SELECT `school_db_instructor`.`id`,
 # Print the instructors name and courses that he belongs to in the terminal 
 # (Do not hard code his name in the print)
 def problem_three(request):
-  
-    instructors = Instructor.objects.filter(id=2)
+
+    instructors = Instructor.objects.get(id=2)
     courses = Course.objects.filter(instructor_id=2)
     for instructor in instructors:
      print(f'Instructor Name: {instructor.first_name} {instructor.last_name}\nCourses: ')
@@ -200,7 +200,10 @@ SELECT `school_db_instructor`.`id`,
 # Get the count of students, courses, and instructors and print them in the terminal
 def problem_four(request):
 
-
+    student_count = Student.objects.count()
+    course_count = Course.objects.count()
+    instructor_count = Instructor.objects.count()
+    print(f'Students Count: {student_count}\nCourses Count: {course_count}\nInstructors Count: {instructor_count}')
 
     return complete(request)
 
@@ -245,7 +248,9 @@ SELECT COUNT(*) AS `__count`
 # Print the new student's id, full name, year, and gpa to the terminal
 # NOTE every time you execute this function a duplicate student will be created with a different primary key number
 def problem_five(request):
-
+    new_student = Student.objects.create(first_name='Kyle',last_name='Harwood',year=2022,gpa=3.0)
+    # new = Student.objects.filter(first_name='Kyle').all().values()
+    print(f'Id: {new_student.id}\nFull Name: {new_student.first_name} {new_student.last_name}\nYear: {new_student.year}\nGPA: {new_student.gpa}')
 
 
     return complete(request)
@@ -279,11 +284,10 @@ VALUES ('Kyle', 'Harwood', 2022, 3.0)
 # Then query the studets table to get that student by their id
 # Print the new student's id, full name, and gpa to the terminal
 def problem_six(request):
-    
-    # Make sure to set this equal to the primary key of the row you just created!
-    student_id = 11
 
-
+    new_s_gpa = Student.objects.filter(id=11).update(gpa=3.9)
+    student = Student.objects.get(id=11)
+    print(f'ID: {student.id}\nFull Name: {student.first_name} {student.last_name}\nGPA: {student.gpa}')
 
     return complete(request)
 
@@ -328,13 +332,10 @@ LIMIT 21
 # Delete the student that you have created and updated
 # Check your MySQL Workbench to confirm the student is no longer in the table!
 def problem_seven(request):
-
-    # Make sure to set this equal to the primary key of the row you just created!
-    student_id = 11
-
-
+  
+    extras = Student.objects.filter(id=11).delete()
     try:
-        student = Student.objects.get(pk=student_id)
+        student = Student.objects.get(pk=11)
     except ObjectDoesNotExist:
         print('Great! It failed and couldnt find the object because we deleted it!')
 
